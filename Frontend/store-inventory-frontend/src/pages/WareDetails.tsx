@@ -177,7 +177,7 @@ useEffect(() => {
                         setBatchToEdit(null);
                         setShowBatchModal(true);
                       }}
-                      className="px-3 py-1 text-sm rounded bg-blue-500 text-white hover:bg-blue-600"
+                      className="px-3 py-1 text-sm rounded bg-green-500 text-white hover:bg-green-600"
                     >
                       Add Batch
                     </button>

@@ -25,7 +25,8 @@ const App: React.FC = () => {
       <Router>
         <div className="bg-gray-100 min-h-screen">
           <NavBar/>
-          <h1 className="text-4xl text-gray-800 text-center mb-6 " >AkinFolu Foods </h1>
+          <div className="mt-6 px-4">
+          <h1 className="text-4xl text-gray-900 text-center mb-6 font-semibold" >AkinFolu Foods </h1>
 
           <Routes>
             <Route path="/" element={<Dashboard/>}/>
@@ -46,6 +47,7 @@ const App: React.FC = () => {
 
           </Routes>
           </div>
+        </div>
       </Router>
 );
 };
