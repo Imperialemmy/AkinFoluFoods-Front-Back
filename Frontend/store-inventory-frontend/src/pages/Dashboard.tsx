@@ -19,12 +19,12 @@ const Dashboard: React.FC = () => {
                 onClick={() => toggleDropdown('wares')}
                 className="w-full bg-gray-200 text-gray-700 py-2 px-4 rounded hover:bg-gray-300"
             >
-              Wares
+              Products
             </button>
             {openDropdown === 'wares' && (
                 <ul className="absolute z-10 bg-white border border-gray-200 rounded shadow-lg w-48 mt-2">
-                  <li><Link to="/add-ware" className="block px-4 py-2 hover:bg-gray-100">Create Ware</Link></li>
-                  <li><Link to="/wares" className="block px-4 py-2 hover:bg-gray-100">View All Wares</Link></li>
+                  <li><Link to="/add-ware" className="block px-4 py-2 hover:bg-gray-100">Create Product</Link></li>
+                  <li><Link to="/wares" className="block px-4 py-2 hover:bg-gray-100">View All Products</Link></li>
                 </ul>
             )}
           </div>
@@ -75,7 +75,6 @@ const Dashboard: React.FC = () => {
                 <ul className="absolute z-10 bg-white border border-gray-200 rounded shadow-lg w-48 mt-2">
                   <li><Link to="/sizes/add" className="block px-4 py-2 hover:bg-gray-100">Create Size</Link></li>
                   <li><Link to="/sizes" className="block px-4 py-2 hover:bg-gray-100">View All Sizes</Link></li>
-                  <li><Link to="/sizes/delete" className="block px-4 py-2 hover:bg-gray-100">Delete Size</Link></li>
                 </ul>
             )}
           </div>

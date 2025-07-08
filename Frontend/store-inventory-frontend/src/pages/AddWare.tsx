@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../services/api';
 import { useNavigate } from 'react-router-dom';
+
+const username = import.meta.env.VITE_API_USERNAME;
+const password = import.meta.env.VITE_API_PASSWORD;
 
 interface Brand { id: number; name: string }
 interface Category { id: number; name: string }
@@ -15,9 +18,9 @@ const AddWare: React.FC = () => {
 
   useEffect(() => {
     Promise.all([
-      axios.get<Brand[]>('http://localhost:8000/api/brands/', { auth: { username: 'admin', password: 'seun@112' } }),
-      axios.get<Category[]>('http://localhost:8000/api/categories/', { auth: { username: 'admin', password: 'seun@112' } }),
-      axios.get<Size[]>('http://localhost:8000/api/sizes/', { auth: { username: 'admin', password: 'seun@112' } }),
+      api.get<Brand[]>('/brands/', { auth: { username, password } }),
+      api.get<Category[]>('/categories/', { auth: { username, password } }),
+      api.get<Size[]>('/sizes/', { auth: { username, password } }),
     ])
       .then(([brandsRes, catsRes, sizesRes]) => {
         setBrands(brandsRes.data);
@@ -45,9 +48,9 @@ const AddWare: React.FC = () => {
       description: formData.description,
     };
 
-    axios
-      .post('http://localhost:8000/api/wares/', payload, {
-        auth: { username: 'admin', password: 'seun@112' },
+    api
+      .post('/wares/', payload, {
+        auth: { username, password },
       })
       .then(() => navigate('/'))
       .catch((error) => {
@@ -56,12 +59,12 @@ const AddWare: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="p-6">
       <h2 className="text-2xl text-gray-700 mb-4">Add Ware</h2>
       <form onSubmit={handleSubmit} className="bg-white border border-gray-200 rounded-lg p-6 max-w-lg mx-auto shadow-sm">
         <div className="mb-4">
           <label className="block text-gray-700 font-bold mb-2">Name:</label>
-          <input type="text" name="name" value={formData.name} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded" />
+          <input type="text" name="name" value={formData.name} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded" placeholder={"Product name"} />
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 font-bold mb-2">Brand:</label>
@@ -85,7 +88,7 @@ const AddWare: React.FC = () => {
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 font-bold mb-2">Description:</label>
-          <textarea name="description" value={formData.description} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded" />
+          <textarea name="description" value={formData.description} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded" placeholder={"About Product"} />
         </div>
         <button type="submit" className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Add Ware</button>
       </form>

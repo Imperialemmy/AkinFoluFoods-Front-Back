@@ -1,39 +1,89 @@
-// src/pages/BrandList.tsx
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from "react";
+import api from "../services/api";
+import { useNavigate } from "react-router-dom";
+import GenericList from "../components/GenericList";
+import BulkSelectToolbar from "../components/BulkSelectToolbar";
 
-interface Brand { id: number; name: string }
+interface Brand {
+  id: number;
+  name: string;
+  // add other fields as needed
+}
 
-const BrandList: React.FC = () => {
+const BrandList = () => {
+  const navigate = useNavigate();
   const [brands, setBrands] = useState<Brand[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    axios
-      .get<Brand[]>('http://localhost:8000/api/brands/', { auth: { username: 'admin', password: 'seun@112' } })
-      .then((response) => {
-        setBrands(response.data);
-        setLoading(false);
+    api
+      .get("/brands/")
+      .then((res) => {
+        setBrands(res.data.results || res.data);
       })
-      .catch((error) => console.error('Error fetching brands:', error));
+      .catch((err) => {
+        console.error("Error fetching brands:", err);
+      });
   }, []);
 
-  if (loading) return <p className="text-center text-gray-600">Loading...</p>;
+  const handleDeleteSelected = async (selectedIds: number[]) => {
+    if (selectedIds.length === 0) {
+      console.warn("No items selected for deletion");
+      return;
+    }
+    if (!window.confirm("Are you sure you want to delete the selected items?")) {
+      return;
+    }
+    try {
+      await api.post("/brands/bulk-delete/", {
+        ids: selectedIds,
+      });
+      setBrands((prev) => prev.filter((b) => !selectedIds.includes(b.id)));
+    } catch (err) {
+      console.error("Delete failed", err);
+    }
+  };
 
   return (
-    <div className="p-6">
-      <h2 className="text-2xl text-gray-700 mb-4">Brands</h2>
-      <ul className="space-y-4">
-        {brands.map((brand) => (
-          <li key={brand.id} className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
-            <Link to={`/brands/${brand.id}`} className="text-blue-500 hover:underline">
-              {brand.name}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <GenericList
+      title="Brands"
+      items={brands}
+      itemKey={(item) => item.id}
+      onItemClick={(id) => navigate(`/brands/${id}`)}
+      enableSelection
+      renderToolbar={(selectedIds, clear, toggleAll) => (
+        <BulkSelectToolbar
+          items={brands}
+          selectedIds={selectedIds as number[]}
+          onToggleAll={toggleAll}
+          onClearSelection={clear}
+          onDeleteSelected={() => handleDeleteSelected(selectedIds as number[])}
+        />
+      )}
+      renderItem={(item, isSelected, toggleSelect, selectionMode) => (
+        <div
+          className="flex justify-between items-center p-4 border rounded-md shadow-sm bg-white hover:bg-gray-100 transition cursor-pointer"
+        >
+          <div className="flex items-center space-x-2">
+            {selectionMode && (
+              <input
+                type="checkbox"
+                id={`brand-checkbox-${item.id}`}
+                name={`brand-checkbox-${item.id}`}
+                checked={isSelected}
+                onChange={toggleSelect}
+                onClick={(e) => e.stopPropagation()}
+              />
+            )}
+            <label
+              htmlFor={`brand-checkbox-${item.id}`}
+              className="text-gray-700 cursor-pointer"
+            >
+              {item.name}
+            </label>
+          </div>
+        </div>
+      )}
+    />
   );
 };
 
