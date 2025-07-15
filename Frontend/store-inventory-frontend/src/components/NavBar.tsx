@@ -1,21 +1,26 @@
-// src/components/NavBar.tsx
-import { Link } from 'react-router-dom';
+import NavLinkItem from "./NavLinkItem";
 
-const NavBar: React.FC = () => {
-  
+const navLinks = [
+  { to: "/", label: "Home" },
+  { to: "/brands", label: "Brands" },
+  { to: "/categories", label: "Categories" },
+  { to: "/wares", label: "Products" },
+];
+
+const Navbar = () => {
   return (
-    <nav className="bg-white p-3 text-black border-b border-gray-200">
-  <div className="max-w-6xl mx-auto flex justify-center">
-    <div className="flex space-x-20">
-      <Link to="/" className="text-sm text-gray-800 hover:text-black transition-colors duration-200">Home</Link>
-      <Link to="/brands" className="text-sm text-gray-800 hover:text-black transition-colors duration-200">Brands</Link>
-      <Link to="/categories" className="text-sm text-gray-800 hover:text-black transition-colors duration-200">Categories</Link>
-      <Link to="/wares" className="text-sm text-gray-800 hover:text-black transition-colors duration-200">Products</Link>
-    </div>
-  </div>
-</nav>
-
+    <nav className="bg-white px-4 py-3 border-b border-gray-200">
+      <div className="max-w-7xl mx-auto flex justify-center">
+        <div className="flex space-x-20">
+          {navLinks.map((link) => (
+            <NavLinkItem key={link.to + link.label} to={link.to}>
+              {link.label}
+            </NavLinkItem>
+          ))}
+        </div>
+      </div>
+    </nav>
   );
 };
 
-export default NavBar;
+export default Navbar;

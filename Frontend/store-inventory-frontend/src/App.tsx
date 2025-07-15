@@ -9,7 +9,7 @@ import BrandsWithWares from "./pages/BrandsWithWares.tsx";
 import WareDetail from "./pages/WareDetails.tsx";
 import CategoryWares from "./pages/CategoriesWithWare.tsx";
 import Wares from "./pages/Wares.tsx";
-import Dashboard from './pages/Dashboard';
+import Dashboard from './pages/Home.tsx';
 import AddBrand from "./pages/AddBrand.tsx";
 import AddCategory from './pages/AddCategory';
 import AddSize from "./pages/AddSize.tsx";
@@ -27,7 +27,6 @@ const App: React.FC = () => {
           <NavBar/>
           <div className="mt-6 px-4">
           <h1 className="text-4xl text-gray-900 text-center mb-6 font-semibold" >AkinFolu Foods </h1>
-
           <Routes>
             <Route path="/" element={<Dashboard/>}/>
             <Route path="/add-ware" element={<ErrorBoundary><AddWare /></ErrorBoundary>}/>
@@ -44,7 +43,6 @@ const App: React.FC = () => {
             <Route path="/update-stock" element={<UpdateStock />} />
             <Route path="/wares/:wareId/variants/new" element={<WareVariantForm />} />
             <Route path="/wares/:wareId/variants/:variantId/edit" element={<WareVariantForm />} />
-
           </Routes>
           </div>
         </div>
